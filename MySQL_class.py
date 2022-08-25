@@ -21,7 +21,7 @@ class CrudSQL(MethodView):  # a class for MySQL CRUD operations.
                 user = request.json['User Name']
                 passwd = request.json['Password']
                 self.db_con = connect(host=host, user=user, passwd=passwd, use_pure="True")  # connection object
-                lg.info( self.db_con)
+                lg.info(self.db_con)
                 self.cur = self.db_con.cursor()
 
             except Exception as e:
@@ -104,7 +104,6 @@ class CrudSQL(MethodView):  # a class for MySQL CRUD operations.
                     lg.error("No such dataset exists in the given directory!")
                     return jsonify("No such dataset exists in the given directory!")
 
-
                 def __fetch_col():  # a protected function
                     """
                     A functionality for fetching the first row of the desired database that we know by default is
@@ -164,14 +163,19 @@ class CrudSQL(MethodView):  # a class for MySQL CRUD operations.
                 create_table()
                 insert_rows()
 
+                os.chdir(curDir)  # switching back to the current directory.
+
+                self.cur.execute("show tables;")
+                if self.table_name in self.cur.fetchall():
+                    lg.info("BULK INSERTION COMPLETED!")
+                    return jsonify("BULK INSERTION COMPLETED!")
+                else:
+                    lg.info("There's some issue with the dataset, Bulk insertion failed!")
+                    return jsonify("There's some issue with the dataset, Bulk insertion failed!")
+
             except Exception as e:
                 lg.error(e)
                 return jsonify(str(e))
-
-            else:
-                os.chdir(curDir)  # switching back to the current directory.
-                lg.info("BULK INSERTION COMPLETED!")
-                return jsonify("BULK INSERTION COMPLETED!")
 
     def delete(self):
         if request.method == "POST":
@@ -204,7 +208,7 @@ class CrudSQL(MethodView):  # a class for MySQL CRUD operations.
                 curDir = os.getcwd()  # current directory
                 self.table_name = request.json["Table Name"]
 
-                df = pd.read_sql(f"SELECT * FROM {self.table_name};",  self.db_con)
+                df = pd.read_sql(f"SELECT * FROM {self.table_name};", self.db_con)
 
                 download_path = r'C:\Users\Suryansh Grover\Downloads'  # location where file is to be downloaded.
                 os.chdir(f"{download_path}")
