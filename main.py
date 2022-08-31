@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
 
-from Log_class import Log
-from MySQL_class import CrudSQL
-from MongoDB_class import CrudMongo
+from logger import Log
+from mysql import CrudSQL
+from mongodb import CrudMongo
 
 app = Flask(__name__)
 

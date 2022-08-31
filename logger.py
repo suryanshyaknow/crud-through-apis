@@ -5,7 +5,7 @@ import os
 class Log:
     def __init__(self):
         try:
-            self.logFile = "CRUD_thru_APIs.log"
+            self.logFile = "crud-thru-apis.log"
 
             # removing the log file if already exists so as not to congest it.
             if os.path.exists(self.logFile):
