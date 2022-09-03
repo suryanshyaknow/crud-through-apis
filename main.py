@@ -32,7 +32,5 @@ app.add_url_rule('/mongodb/use_db/bulk_insert', view_func=crudMongo.bulk_insert_
 app.add_url_rule('/mongodb/use_db/download', view_func=crudMongo.download_, methods=['POST'])
 app.add_url_rule('/mongodb/use_db/delete', view_func=crudMongo.delete_, methods=['POST'])
 
-
-
 if __name__ == '__main__':
     app.run(debug=True)
